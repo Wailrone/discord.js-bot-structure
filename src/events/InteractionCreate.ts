@@ -1,24 +1,24 @@
 "use strict";
 
-import type { Interaction } from "discord.js";
-import type Client from "../../main";
+import { Events, Interaction } from "discord.js";
 import CommandService from "../services/CommandService";
 import DiscordEvent from "../utils/DiscordEvent";
+import Bot from "../../main";
 
 /*
 L'évent interactionCreate n'est pas long car en faites les tâches sont répartis dans le dossier services prenez exemple sur CommandService ;)
 */
 
-class InteractionCreate extends DiscordEvent {
+class InteractionCreate extends DiscordEvent<"interactionCreate"> {
 	commands: CommandService;
-	constructor(client: typeof Client) {
-		super(client, "interactionCreate");
+	constructor(client: Bot) {
+		super(client, Events.InteractionCreate);
 		this.client = client;
 		this.commands = new CommandService(this.client);
 	}
 
 	async run(interaction: Interaction) {
-		if (interaction.isChatInputCommand()) await this.commands.handle(interaction);
+		if (interaction.isCommand()) await this.commands.handle(interaction);
 	}
 }
 

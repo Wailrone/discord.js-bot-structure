@@ -1,7 +1,7 @@
 "use strict";
 
-import type Client from "../../main";
-import { Collection } from "discord.js";
+import Bot from "../../main";
+import { ClientEvents, Collection } from "discord.js";
 import { resolve } from "path";
 import type DiscordEvent from "./DiscordEvent";
 
@@ -10,22 +10,22 @@ import type DiscordEvent from "./DiscordEvent";
 import { access, readdir, stat } from "fs/promises";
 
 class EventsManager {
-	private _client: typeof Client;
-	private _events: Collection<string, DiscordEvent>;
+	private _client: Bot;
+	private _events: Collection<string, DiscordEvent<keyof ClientEvents>>;
 	private _path: string;
 
-	constructor(client: typeof Client) {
+	constructor(client: Bot) {
 		this._client = client;
 		this._events = new Collection();
 		// eslint-disable-next-line no-undef
 		this._path = resolve(__dirname, "..", "events");
 	}
 
-	get events(): Collection<string, DiscordEvent> {
+	get events(): Collection<string, DiscordEvent<keyof ClientEvents>> {
 		return this._events;
 	}
 
-	addEvent(event: DiscordEvent) {
+	addEvent(event: DiscordEvent<keyof ClientEvents>) {
 		this._events.set(event.name.toLowerCase(), event);
 		this._client.on(event.name, event.run.bind(event));
 		delete require.cache[require.resolve(this._path + "\\" + event.name)];

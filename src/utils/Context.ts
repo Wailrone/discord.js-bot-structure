@@ -13,7 +13,7 @@ import {
 	WebhookFetchMessageOptions,
 	TextBasedChannel
 } from "discord.js";
-import Client from "../../main";
+import Bot from "../../main";
 
 /*
 Ca va paraitre énervent au début mais c'est super utile ! Au lieu de faire à chaque fois dans vos commandes
@@ -25,11 +25,11 @@ remplacer aussi ctx.message.channel.send() par ctx.send(); !
 */
 class Context {
 	interaction: CommandInteraction;
-	client: typeof Client;
+	client: Bot;
 	args: CommandInteractionOptionResolver;
 	lang: string;
 
-	constructor(client: typeof Client, interaction: CommandInteraction) {
+	constructor(client: Bot, interaction: CommandInteraction) {
 		this.interaction = interaction;
 		this.client = client;
 		this.args = (

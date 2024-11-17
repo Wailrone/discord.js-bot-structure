@@ -1,12 +1,12 @@
 "use strict";
 
-import type Client from "../../main";
+import Bot from "../../main";
 import { CommandInteraction } from "discord.js";
 import Context from "../utils/Context";
 
 class CommandService {
-	client: typeof Client;
-	constructor(client: typeof Client) {
+	client: Bot;
+	constructor(client: Bot) {
 		this.client = client;
 	}
 
