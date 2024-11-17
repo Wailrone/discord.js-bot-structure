@@ -1,7 +1,7 @@
 {
   "name": "discord.js-bot-structure",
   "version": "1.0.0",
-  "description": "An basic discord.js-bot-structure",
+  "description": "A useful discord.js-bot-structure",
   "main": "main.ts",
   "scripts": {
     "test": "tsc --noEmit",
@@ -30,7 +30,7 @@
   "node": ">=16.6.0",
   "dependencies": {
     "asciiart-logo": "^0.2.7",
-    "discord.js": "14.13.0"
+    "discord.js": "^14.16.3"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
