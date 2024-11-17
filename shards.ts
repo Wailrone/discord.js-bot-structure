@@ -5,7 +5,7 @@ import { ShardingManager } from "discord.js";
 // @ts-ignore
 import logo from "asciiart-logo";
 import Logger from "./src/utils/Logger";
-import { bot } from "./config.json";
+import "dotenv/config";
 import * as botPackage from "./package.json";
 
 const shardManagerLogger: Logger = new Logger("ShardingManager");
@@ -17,11 +17,11 @@ shardManagerLogger.info("Sharding manager starting !");
 
 const processArgs = process.argv.slice(2);
 
-new ShardingManager("./dist/main.js", {
+new ShardingManager("./dist/index.js", {
 	respawn: true,
 	totalShards:
 		processArgs && parseInt(processArgs[1]) && processArgs[0] === "--shard" ? parseInt(processArgs[1]) : "auto",
-	token: bot.token
+	token: process.env.TOKEN
 })
 	.on("shardCreate", shard => {
 		shardManagerLogger.info(`Creating Shard #${shard.id}`);
