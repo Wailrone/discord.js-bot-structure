@@ -2,7 +2,7 @@
 
 import Bot from "../../main";
 import { CommandInteraction } from "discord.js";
-import Context from "../utils/Context";
+import { BaseContext } from "../utils/Context";
 
 class CommandService {
 	client: Bot;
@@ -58,12 +58,12 @@ class CommandService {
 			return interaction.reply("Sorry but this command was temporarly disabled.");
 		}
 
-		const ctx = new Context(this.client, interaction);
+		const ctx = new BaseContext(this.client, interaction);
 
 		try {
 			await command.run(ctx);
 			this.client.logger.info(
-				`Command ${command.name} executed by ${ctx.member.user.username} in ${ctx.guild.name}`
+				//`Command ${command.name} executed by ${ctx.author.username} in ${ctx.guild.name}`
 			);
 		} catch (error) {
 			// faites quelque chose si il y a une erreur sur une commande

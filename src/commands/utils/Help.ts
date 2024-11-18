@@ -1,12 +1,13 @@
 "use strict";
 
-import type Context from "../../utils/Context";
 import Command from "../../utils/Command.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
+import { BaseContext } from "../../utils/Context.js";
 
 class Help extends Command {
 	constructor() {
 		super({
+			type: ApplicationCommandType.ChatInput,
 			name: "help",
 			category: "utils",
 			description: "Display all the commands of the bot",
@@ -22,7 +23,8 @@ class Help extends Command {
 		});
 	}
 
-	async run(ctx: Context) {
+	async run(ctx: BaseContext<ChatInputCommandInteraction>) {
+		console.debug(ctx.args);
 		if (ctx.args.getString("command")) {
 			const command: Command | undefined = ctx.client.commands.findCommand(
 				ctx.args?.getString("command")?.toLowerCase()

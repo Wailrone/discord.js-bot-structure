@@ -73,26 +73,14 @@ class CommandsManager {
 		await this._globalCommands.set(
 			this._commands
 				.filter(cmd => cmd.testCmd)
-				.map(cmd => {
-					return {
-						name: cmd.name,
-						description: cmd.description,
-						options: cmd.options
-					};
-				}),
+				.map(cmd => cmd.commandData),
 			this._client.config.testGuild
 		);
 
 		await this._globalCommands.set(
 			this._commands
 				.filter(cmd => !cmd.testCmd)
-				.map(cmd => {
-					return {
-						name: cmd.name,
-						description: cmd.description,
-						options: cmd.options
-					};
-				})
+				.map(cmd => cmd.commandData)
 		);
 	}
 }

@@ -2,17 +2,12 @@
 
 import {
 	CommandInteraction,
-	CommandInteractionOptionResolver,
-	Guild,
 	ShardClientUtil,
 	User,
-	GuildMember,
 	InteractionReplyOptions,
 	MessagePayload,
 	InteractionDeferReplyOptions,
-	WebhookFetchMessageOptions,
-	TextBasedChannel
-} from "discord.js";
+	WebhookFetchMessageOptions} from "discord.js";
 import Bot from "../../main";
 
 /*
@@ -23,7 +18,7 @@ Au lieu de faire message.guild.members.cache.get(message.author.id); dans vos co
 ctx.member; utile non ?
 remplacer aussi ctx.message.channel.send() par ctx.send(); !
 */
-class Context {
+/*class Context {
 	interaction: CommandInteraction;
 	client: Bot;
 	args: CommandInteractionOptionResolver;
@@ -85,6 +80,76 @@ class Context {
 	deleteReply(): Promise<void> {
 		return this.interaction.deleteReply();
 	}
+}*/
+
+export class BaseContext<Interaction extends CommandInteraction = CommandInteraction> {
+	interaction: Interaction;
+	client: Bot;
+	lang: string;
+
+	constructor(client: Bot, interaction: Interaction) {
+		this.interaction = interaction;
+		this.client = client;
+		this.lang = interaction.locale;
+	}
+	get shards(): ShardClientUtil {
+		if (!this.client?.shard) throw new Error("Shard non trouvable");
+		return this.client.shard;
+	}
+
+	get author(): User {
+		return this.interaction.user;
+	}
+	
+	get args(): Interaction["options"] {
+		return this.interaction.options;
+	}
+
+	reply(content: string | MessagePayload | InteractionReplyOptions) {
+		return this.interaction.reply(content); // for embed or file or simple message
+	}
+
+	deferReply(options?: InteractionDeferReplyOptions) {
+		this.interaction.deferReply(options);
+	}
+
+	followUp(content: string | MessagePayload | InteractionReplyOptions) {
+		return this.interaction.followUp(content);
+	}
+
+	editReply(content: string | MessagePayload | WebhookFetchMessageOptions) {
+		return this.interaction.editReply(content);
+	}
+
+	deleteReply(): Promise<void> {
+		return this.interaction.deleteReply();
+	}
+
+	translate(key: string) {
+		return key; // To implement
+	}
 }
 
-export default Context;
+// Put your database stuff here like guild settings
+export class CachedGuildContext<Interaction extends CommandInteraction<"cached">> extends BaseContext<Interaction> {
+	constructor(client: Bot, interaction: Interaction) {
+		super(client, interaction);
+		//this.guildSettings = {};
+	}
+
+	get guild() {
+		return this.interaction.guild;
+	}
+
+	get me() {
+		return this.guild.members.me;
+	}
+
+	get member() {
+		return this.interaction.member;
+	}
+
+	get channel() {
+		return this.interaction.channel;
+	}
+}

@@ -1,12 +1,13 @@
 "use strict";
 
-import { Collection } from "discord.js";
+import { ApplicationCommandType, Collection } from "discord.js";
 import Command from "../../utils/Command";
-import Context from "../../utils/Context";
+import { BaseContext } from "../../utils/Context";
 
 class Botinfo extends Command {
 	constructor() {
 		super({
+			type: ApplicationCommandType.ChatInput,
 			name: "botinfo",
 			category: "utils",
 			description: "Displays the bot informations.",
@@ -15,7 +16,7 @@ class Botinfo extends Command {
 		});
 	}
 
-	async run(ctx: Context) {
+	async run(ctx: BaseContext) {
 		const [guilds, users] = (await Promise.all([
 			ctx.shards.fetchClientValues("guilds.cache.size"),
 			ctx.shards.fetchClientValues("users.cache.size")
