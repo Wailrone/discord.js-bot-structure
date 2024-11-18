@@ -8,6 +8,7 @@
     "compile": "tsc",
     "watch": "tsc --watch",
     "start": "tsc && node dist/shards.js",
+    "dev": "node dist/index.js",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --check **/*.ts",
     "check": "yarn lint && yarn prettier && yarn test",

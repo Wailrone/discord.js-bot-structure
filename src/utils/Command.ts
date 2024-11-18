@@ -1,6 +1,6 @@
 "use strict";
 
-import { ApplicationCommandOptionData, ApplicationCommandType, ApplicationIntegrationType, BaseApplicationCommandData, ChatInputApplicationCommandData, InteractionContextType, MessageApplicationCommandData, UserApplicationCommandData } from "discord.js";
+import { ApplicationCommandOptionData, ApplicationCommandType, ApplicationIntegrationType, BaseApplicationCommandData, ChatInputApplicationCommandData, InteractionContextType, MessageApplicationCommandData, PermissionResolvable, PermissionsBitField, UserApplicationCommandData } from "discord.js";
 import { BaseContext } from "./Context";
 
 /*
@@ -35,7 +35,7 @@ export default abstract class Command {
 	category: string;
 	options: ApplicationCommandOptionData[];
 	examples: string[];
-	userPerms: bigint[];
+	userPerms: PermissionResolvable;
 	botPerms: bigint[];
 	disabled: boolean;
 	ownerOnly: boolean;
@@ -56,7 +56,7 @@ export default abstract class Command {
 		this.descriptionLocalizations = info.descriptionLocalizations || {};
 		this.nameLocalizations = info.nameLocalizations || {};
 
-		this.userPerms = info.userPerms || [];
+		this.userPerms = (info.userPerms?.length && info.userPerms.length > 0)? new PermissionsBitField(info.userPerms) : undefined;
 		this.botPerms = info.botPerms || [];
 		this.disabled = info.disabled || false;
 		this.ownerOnly = info.ownerOnly || false;
@@ -65,12 +65,12 @@ export default abstract class Command {
 		this.nsfw = info.nsfw || false;
 		// this.cooldown = info.cooldown || 0; Si vous voulez faire votre système de cooldown ;)
 
-		this.integrationTypes = info.integrationTypes || [];
-		this.contexts = info.contexts || [];
+		this.integrationTypes = info.integrationTypes || [ApplicationIntegrationType.GuildInstall];
+		this.contexts = info.contexts || [InteractionContextType.Guild];
 	}
 
 	// eslint-disable-next-line no-unused-vars
-	abstract run(ctx: BaseContext): void;
+	abstract run(ctx: BaseContext): Promise<unknown>;
 
 	get commandData(): ChatInputApplicationCommandData | MessageApplicationCommandData | UserApplicationCommandData {
 		const base: BaseApplicationCommandData = {
@@ -80,6 +80,12 @@ export default abstract class Command {
 			nameLocalizations: this.nameLocalizations,
 			nsfw: this.nsfw
 		};
+		if (this.userPerms) {
+			Object.assign(base, {
+				defaultMemberPermissions: this.userPerms,
+			});
+		}
+		console.debug(base);
 		if (this.type === ApplicationCommandType.ChatInput) {
 			return {
 				...base,

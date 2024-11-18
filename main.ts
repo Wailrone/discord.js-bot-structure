@@ -7,6 +7,7 @@ import EventsManager from "./src/utils/EventsManager.js";
 import Logger from "./src/utils/Logger";
 import * as config from "./config.json";
 import { ConfigFile } from "./src/utils/Constants";
+import "dotenv/config";
 
 // Création de notre classe Bot qui est la principale et qui est étendu de Client
 class Bot extends Client {
@@ -81,5 +82,8 @@ class Bot extends Client {
 		}
 	}
 }
+
+process.on("uncaughtException", console.error);
+process.on("unhandledRejection", console.error);
 
 export default Bot;

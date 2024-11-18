@@ -1,7 +1,7 @@
 "use strict";
 
 import Command from "../../utils/Command.js";
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, PermissionsBitField } from "discord.js";
 import { BaseContext } from "../../utils/Context.js";
 
 class Help extends Command {
@@ -19,6 +19,7 @@ class Help extends Command {
 					required: false
 				}
 			],
+			userPerms: [PermissionsBitField.Flags.BanMembers, PermissionsBitField.Flags.KickMembers],
 			examples: ["help", "help botinfo"]
 		});
 	}
