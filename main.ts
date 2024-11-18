@@ -73,7 +73,7 @@ class Bot extends Client {
 		this.logger.success(`[Events] Loaded ${this.events.events.size} events`);
 
 		try {
-			await this.login(this.config.bot.token);
+			await this.login(process.env.TOKEN);
 			this.logger.success("[WS] Connected to discord");
 		} catch (error) {
 			this.logger.error(`[WS] Connection error: ${error}`);
