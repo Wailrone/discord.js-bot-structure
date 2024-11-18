@@ -25,7 +25,6 @@ class Help extends Command {
 	}
 
 	async run(ctx: BaseContext<ChatInputCommandInteraction>) {
-		console.debug(ctx.args);
 		if (ctx.args.getString("command")) {
 			const command: Command | undefined = ctx.client.commands.findCommand(
 				ctx.args?.getString("command")?.toLowerCase()

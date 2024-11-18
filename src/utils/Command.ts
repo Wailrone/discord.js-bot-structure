@@ -85,7 +85,6 @@ export default abstract class Command {
 				defaultMemberPermissions: this.userPerms,
 			});
 		}
-		console.debug(base);
 		if (this.type === ApplicationCommandType.ChatInput) {
 			return {
 				...base,
