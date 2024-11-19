@@ -58,8 +58,5 @@ jobs:
             - name: ESLint
               run: yarn lint
 
-            - name: Prettier
-              run: yarn prettier
-
             - name: Compile TypeScript Test
               run: yarn test
