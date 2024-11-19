@@ -3,6 +3,7 @@
 import Bot from "../../main";
 import { CommandInteraction } from "discord.js";
 import { BaseContext, CachedGuildContext } from "../utils/Context";
+import prisma from "../utils/PrismaClient";
 
 class CommandService {
 	client: Bot;
@@ -43,7 +44,17 @@ class CommandService {
 				return interaction.reply("Sorry but this command is temporarly disabled.");
 			}
 
-			ctx = new CachedGuildContext(this.client, interaction);
+			const guildSettings = await prisma.guild.upsert({
+				where: {
+					id: guild.id
+				},
+				create: {
+					id: guild.id
+				},
+				update: {},
+			});
+
+			ctx = new CachedGuildContext(this.client, interaction, guildSettings);
 
 
 		} else {

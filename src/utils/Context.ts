@@ -9,6 +9,8 @@ import {
 	InteractionDeferReplyOptions,
 	WebhookFetchMessageOptions} from "discord.js";
 import Bot from "../../main";
+import { Guild, Prisma } from "@prisma/client";
+import prisma from "./PrismaClient";
 
 /*
 Ca va paraitre énervent au début mais c'est super utile ! Au lieu de faire à chaque fois dans vos commandes
@@ -132,9 +134,10 @@ export class BaseContext<Interaction extends CommandInteraction = CommandInterac
 
 // Put your database stuff here like guild settings
 export class CachedGuildContext<Interaction extends CommandInteraction<"cached">> extends BaseContext<Interaction> {
-	constructor(client: Bot, interaction: Interaction) {
+	guildSettings: Guild;
+	constructor(client: Bot, interaction: Interaction, guildSettings: Guild) {
 		super(client, interaction);
-		//this.guildSettings = {};
+		this.guildSettings = guildSettings;
 	}
 
 	get guild() {
@@ -151,5 +154,12 @@ export class CachedGuildContext<Interaction extends CommandInteraction<"cached">
 
 	get channel() {
 		return this.interaction.channel;
+	}
+
+	async updateGuildSettings(data: Prisma.GuildUpdateInput) {
+		this.guildSettings = await prisma.guild.update({
+			where: { id: this.guild.id },
+			data
+		});
 	}
 }
