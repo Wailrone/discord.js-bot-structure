@@ -4,7 +4,7 @@ import { ApplicationCommandType, Collection } from "discord.js";
 import Command from "../../utils/Command";
 import { BaseContext } from "../../utils/Context";
 
-class Botinfo extends Command {
+export default class Botinfo extends Command {
 	constructor() {
 		super({
 			type: ApplicationCommandType.ChatInput,
@@ -76,5 +76,3 @@ class Botinfo extends Command {
 		});
 	}
 }
-
-module.exports = new Botinfo();

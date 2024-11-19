@@ -9,7 +9,7 @@ import Bot from "../../main";
 L'évent interactionCreate n'est pas long car en faites les tâches sont répartis dans le dossier services prenez exemple sur CommandService ;)
 */
 
-class InteractionCreate extends DiscordEvent<"interactionCreate"> {
+export default class InteractionCreate extends DiscordEvent<Events.InteractionCreate> {
 	commands: CommandService;
 	constructor(client: Bot) {
 		super(client, Events.InteractionCreate);
@@ -21,5 +21,3 @@ class InteractionCreate extends DiscordEvent<"interactionCreate"> {
 		if (interaction.isCommand()) await this.commands.handle(interaction);
 	}
 }
-
-module.exports = InteractionCreate;

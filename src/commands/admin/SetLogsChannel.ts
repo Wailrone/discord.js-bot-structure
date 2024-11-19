@@ -4,7 +4,7 @@ import { ApplicationCommandOptionType, ApplicationCommandType, ChannelType, Chat
 import Command from "../../utils/Command";
 import { CachedGuildContext } from "../../utils/Context";
 
-class Botinfo extends Command {
+export default class SetLogsChannel extends Command {
 	constructor() {
 		super({
 			type: ApplicationCommandType.ChatInput,
@@ -34,5 +34,3 @@ class Botinfo extends Command {
 
 	}
 }
-
-module.exports = new Botinfo();

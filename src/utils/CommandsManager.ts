@@ -62,7 +62,7 @@ class CommandsManager {
 
 							if (cmdStats.isFile() && command.endsWith(".js")) {
 								// eslint-disable-next-line @typescript-eslint/no-var-requires
-								this.addCommand(require(cmdPath));
+								this.addCommand(new (require(cmdPath).default)());
 							}
 						}
 					}
@@ -71,17 +71,11 @@ class CommandsManager {
 		}
 
 		await this._globalCommands.set(
-			this._commands
-				.filter(cmd => cmd.testCmd)
-				.map(cmd => cmd.commandData),
+			this._commands.filter(cmd => cmd.testCmd).map(cmd => cmd.commandData),
 			this._client.config.testGuild
 		);
 
-		await this._globalCommands.set(
-			this._commands
-				.filter(cmd => !cmd.testCmd)
-				.map(cmd => cmd.commandData)
-		);
+		await this._globalCommands.set(this._commands.filter(cmd => !cmd.testCmd).map(cmd => cmd.commandData));
 	}
 }
 

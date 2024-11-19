@@ -4,7 +4,7 @@ import Command from "../../utils/Command.js";
 import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, PermissionsBitField } from "discord.js";
 import { BaseContext } from "../../utils/Context.js";
 
-class Help extends Command {
+export default class Help extends Command {
 	constructor() {
 		super({
 			type: ApplicationCommandType.ChatInput,
@@ -94,5 +94,3 @@ class Help extends Command {
 		});
 	}
 }
-
-module.exports = new Help();
