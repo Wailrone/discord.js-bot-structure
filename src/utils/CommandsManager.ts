@@ -40,7 +40,7 @@ class CommandsManager {
 		try {
 			await access(this._path);
 		} catch (error) {
-			return;
+			return console.error(error);
 		}
 
 		await this._globalCommands.fetch();
@@ -61,7 +61,7 @@ class CommandsManager {
 							const cmdStats = await stat(cmdPath);
 
 							if (cmdStats.isFile() && command.endsWith(".js")) {
-								// eslint-disable-next-line @typescript-eslint/no-var-requires
+								// eslint-disable-next-line @typescript-eslint/no-require-imports
 								this.addCommand(new (require(cmdPath).default)());
 							}
 						}

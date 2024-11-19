@@ -17,7 +17,6 @@ class EventsManager {
 	constructor(client: Bot) {
 		this._client = client;
 		this._events = new Collection();
-		// eslint-disable-next-line no-undef
 		this._path = resolve(__dirname, "..", "events");
 	}
 
@@ -35,7 +34,7 @@ class EventsManager {
 		try {
 			await access(this._path);
 		} catch (error) {
-			return;
+			return console.error(error);
 		}
 
 		const events = await readdir(this._path);
@@ -46,7 +45,7 @@ class EventsManager {
 				const stats = await stat(path);
 
 				if (event !== "Event.js" && stats.isFile() && event.endsWith(".js")) {
-					// eslint-disable-next-line @typescript-eslint/no-var-requires
+					// eslint-disable-next-line @typescript-eslint/no-require-imports
 					this.addEvent(new (require(path).default)(this._client));
 				}
 			}
