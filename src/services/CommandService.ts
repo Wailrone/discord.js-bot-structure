@@ -40,7 +40,7 @@ class CommandService {
 	
 			// Si la commande est désactivée
 			if (command.disabled && !this.client.config.bot.ownersIDs.includes(interaction.user.id)) {
-				return interaction.reply("Sorry but this command was temporarly disabled.");
+				return interaction.reply("Sorry but this command is temporarly disabled.");
 			}
 
 			ctx = new CachedGuildContext(this.client, interaction);
@@ -53,8 +53,12 @@ class CommandService {
 		this.client.logger.info(
 			`Command ${command.name} executed by ${ctx.author.username}`
 		);
-		command.run(ctx).catch(error => {
-			interaction.reply("Sorry but, an error was occured.");
+		await command.run(ctx).catch(error => {
+			if (interaction.replied || interaction.deferred) {
+				interaction.editReply("Sorry but, an error occured.");
+			} else {
+				interaction.reply("Sorry but, an error occured.");
+			}
 			this.client.logger.error(error);
 		});
 	}
