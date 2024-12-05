@@ -44,7 +44,6 @@ class EventsManager {
 				const stats = await stat(path);
 
 				if (event !== "Event.js" && stats.isFile() && event.endsWith(".js")) {
-					console.log(path);
 					// eslint-disable-next-line @typescript-eslint/no-require-imports
 					this.addEvent(new (require(path).default)(this._client));
 					delete require.cache[require.resolve(path)];
